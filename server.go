@@ -312,6 +312,10 @@ func (s *Server) Handle(ctx context.Context, conn net.Conn) {
 					kafkaMsg.Key = parts[2]
 				}
 
+				if kafkaMsg.Key != nil && topic == "skroutz.model-updates" {
+					s.log.Printf("Received message with key: %s\n", string(kafkaMsg.Key))
+				}
+
 				prod, err := c.Producer(cfg.Librdkafka.Producer)
 				if err != nil {
 					writeErr = writer.WriteError("PROD Error spawning producer: " + err.Error())
